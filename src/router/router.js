@@ -24,11 +24,11 @@ const createComponent = (component) => (props) => (
 const getRouter = () => (
     <Router>
         <div>
-            <ul>
-                <li><Link to="/">首页</Link></li>
-                <li><Link to="/page1">Page1</Link></li>
-                <li><Link to="/counter">Counter</Link></li>
-                <li><Link to="/userinfo">UserInfo</Link></li>
+            <ul className="nav">
+                <li className="nav-item"><Link to="/">首页</Link></li>
+                <li className="nav-item"><Link to="/page1">Page1</Link></li>
+                <li className="nav-item"><Link to="/counter">Counter</Link></li>
+                <li className="nav-item"><Link to="/userinfo">UserInfo</Link></li>
             </ul>
             <Switch>
                 <Route exact path="/" component={createComponent(Home)}/>
