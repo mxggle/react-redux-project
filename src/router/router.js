@@ -2,25 +2,36 @@ import React from 'react';
 
 import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 
-import Bundle from './Bundle';
+// import Home from 'pages/Home/Home';
+// import Page1 from 'pages/Page1/Page1';
+// import Counter from 'pages/Counter/Counter';
+// import UserInfo from 'pages/UserInfo/UserInfo';
 
-import Home from 'bundle-loader?lazy&name=home!pages/Home/Home';
-import Page1 from 'bundle-loader?lazy&name=page1!pages/Page1/Page1';
-import Counter from 'bundle-loader?lazy&name=counter!pages/Counter/Counter';
-import UserInfo from 'bundle-loader?lazy&name=userInfo!pages/UserInfo/UserInfo';
+import Loadable from 'react-loadable';
 
 const Loading = function () {
     return <div>Loading...</div>
 };
 
-const createComponent = (component) => (props) => (
-    <Bundle load={component}>
-        {
-            (Component) => Component ? <Component {...props} /> : <Loading/>
-        }
-    </Bundle>
-);
-
+// const LoadableComponet = (name) => Loadable.Map({
+//     loader:{
+//        Home:() => import('pages/Home/Home'),
+//        Page1:() => import('pages/Page1/Page1'),
+//        Counter:() => import('pages/Counter/Counter'),
+//        UserInfo: () => import('pages/UserInfo/UserInfo'),
+//     },
+//     loading: Loading,
+//     render(loaded, props) {
+//         let Com = loaded[name]
+//         return <Com.default {...props}/>
+//     },
+//     delay:1000,
+// })
+const createAsyncComp = path => Loadable({ 
+    loader: () => import(`pages/${path}/${path}`), 
+    loading: Loading
+ })
+// console.log(LoadableComponet);
 const getRouter = () => (
     <Router>
         <div>
@@ -31,10 +42,10 @@ const getRouter = () => (
                 <li className="nav-item"><Link to="/userinfo">UserInfo</Link></li>
             </ul>
             <Switch>
-                <Route exact path="/" component={createComponent(Home)}/>
-                <Route path="/page1" component={createComponent(Page1)}/>
-                <Route path="/counter" component={createComponent(Counter)}/>
-                <Route path="/userinfo" component={createComponent(UserInfo)}/>
+                <Route exact path="/" component={createAsyncComp('Home')}/>
+                <Route path="/page1" component={createAsyncComp('Page1')}/>
+                <Route path="/counter" component={createAsyncComp('Counter')}/>
+                <Route path="/userinfo" component={createAsyncComp('UserInfo')}/>
             </Switch>
         </div>
     </Router>
